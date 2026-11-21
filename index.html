@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plat Test en 3D</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
+<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+<style>
+/* Layout : une carte de menu, le plat en grand, les infos de portion dessous */
+:root {
+  --bg: #f6f7f4;
+  --surface: #ffffff;
+  --fg: #1d221e;
+  --muted: #5f6a62;
+  --line: #dfe4de;
+  --accent: #2f7a4f;
+  --accent-fg: #ffffff;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141815; --surface: #1c211d; --fg: #eef2ee; --muted: #9eaaa1;
+    --line: #2d342f; --accent: #5cc189; --accent-fg: #0f1a13; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141815; --surface: #1c211d; --fg: #eef2ee; --muted: #9eaaa1;
+  --line: #2d342f; --accent: #5cc189; --accent-fg: #0f1a13; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body);
+  font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 40px;
+}
+main { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 7vw, 2.75rem); line-height: 1.05; margin: 4px 0 0; text-wrap: balance; }
+.viewer {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 20px;
+  overflow: hidden; position: relative;
+}
+model-viewer { width: 100%; height: min(70vh, 460px); background: transparent; --poster-color: transparent; }
+.ar-btn {
+  position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%);
+  background: var(--accent); color: var(--accent-fg); border: 0; border-radius: 999px;
+  font: 600 15px var(--body); padding: 12px 22px; cursor: pointer; white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0,0,0,.18);
+}
+.ar-btn:focus-visible { outline: 3px solid var(--fg); outline-offset: 3px; }
+.hint { font-size: 13px; color: var(--muted); text-align: center; margin: 0; }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.fact { background: var(--surface); padding: 14px 12px; display: flex; flex-direction: column; gap: 2px; }
+.fact b { font-family: var(--display); font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fact span { font-size: 12px; color: var(--muted); }
+footer { font-size: 12px; color: var(--muted); text-align: center; }
+@media (max-width: 380px) { .facts { grid-template-columns: 1fr; } }
+body{margin:0}
+</style>
+</head>
+<body>
+
+<main>
+  <header>
+    <div class="eyebrow">Menu en réalité augmentée</div>
+    <h1>Plat Test</h1>
+  </header>
+
+  <div class="viewer">
+    <model-viewer id="plat" src="plat-test.glb" alt="Le plat test scanné en 3D"
+      ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed" ar-placement="floor"
+      camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="1500"
+      rotation-per-second="18deg" shadow-intensity="1" shadow-softness="0.8"
+      exposure="1" camera-orbit="0deg 60deg auto" interaction-prompt="auto">
+      <button slot="ar-button" class="ar-btn" id="ar-btn">Voir le plat sur ma table</button>
+    </model-viewer>
+  </div>
+  <p class="hint">Fais glisser pour tourner autour du plat, pince pour zoomer.</p>
+
+  <div class="facts" aria-label="Taille de la portion">
+    <div class="fact"><b>≈ 29 cm</b><span>de large</span></div>
+    <div class="fact"><b>≈ 29 cm</b><span>de profondeur</span></div>
+    <div class="fact"><b>≈ 7 cm</b><span>de hauteur</span></div>
+  </div>
+
+  <footer>Affiché à taille réelle en réalité augmentée.</footer>
+</main>
+</body>
+</html>
